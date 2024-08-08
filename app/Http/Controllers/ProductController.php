@@ -9,9 +9,11 @@ class ProductController extends Controller
     //Fetch all records
     public function index(Request $request)
     {
-        $sortBy = $request->input('sort_by', 'id'); 
-        $sortOrder = $request->input('order', 'asc'); 
-        $products = Products::orderBy($sortBy, $sortOrder)->get();
+        $sortBy = $request->input('sort_by', 'id');
+        $sortOrder = $request->input('order', 'asc');
+        $perPage = 5; // Number of products per page
+
+        $products = Products::orderBy($sortBy, $sortOrder)->paginate($perPage);
         return view('product', [
             'products' => $products,
             'sortBy' => $sortBy,
