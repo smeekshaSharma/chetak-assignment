@@ -7,10 +7,16 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     //Fetch all records
-    public function index()
+    public function index(Request $request)
     {
-        $products = Products::all();
-        return view('product', ['products' => $products]);
+        $sortBy = $request->input('sort_by', 'id'); 
+        $sortOrder = $request->input('order', 'asc'); 
+        $products = Products::orderBy($sortBy, $sortOrder)->get();
+        return view('product', [
+            'products' => $products,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder
+        ]);
     }
     
     // Add new one
